@@ -7,7 +7,9 @@ class App extends React.Component{
     productos: []
   }
 
+  //Se ejecuta cuando se renderice el componente
   componentDidMount() {
+    //Consumo get
     axios.get(`http://localhost:3001/api/producto`)
       .then(res => {
         const productos = res.data.productos;
@@ -15,9 +17,11 @@ class App extends React.Component{
       })
   }
 
+  //Se ejecuta cuando se precione el botón del formulario
   handleSubmit(event) {
     //event.preventDefault();
 
+    //consumo post
     axios.post(`http://localhost:3001/api/producto`, {
       codigo: event.target.codigo.value,
       nombre: event.target.nombre.value,
