@@ -1,25 +1,39 @@
 import './App.css';
 import React from 'react';
-import ReactDOM from 'react-dom'
 import axios from 'axios';
 
 class App extends React.Component{
+  state = {
+    productos: []
+  }
 
   componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/users`)
+    axios.get(`http://localhost:3001/api/producto`)
       .then(res => {
-        const persons = res.data;
-        this.setState({ persons });
+        const productos = res.data.productos;
+        this.setState({ productos });
       })
   }
 
   handleSubmit(event) {
     //event.preventDefault();
-    let codigo = event.target.codigo.value;
-    let nombre = event.target.nombre.value;
-    let precio = event.target.precio.value;
-    let disponible = event.target.disponible.checked;
-    alert(codigo +" "+nombre+" "+precio+" "+disponible );
+
+    axios.post(`http://localhost:3001/api/producto`, {
+      codigo: event.target.codigo.value,
+      nombre: event.target.nombre.value,
+      precio: event.target.precio.value,
+      disponible: event.target.disponible.checked
+    })
+    .then(res=>{
+      alert(res.data.message);
+      console.log(res);
+    })
+    .catch(err=>{
+      alert(err);
+      console.log(err);
+    });
+    
+
   }
 
   render(){
@@ -36,7 +50,9 @@ class App extends React.Component{
         </div>
   
         <div className="ver-resultados">
-  
+          <ul>
+            {this.state.productos.map(producto => <li>{producto.codigo} - {producto.nombre} - {producto.precio} - Disponible: {producto.disponible?'SI':'NO'}</li>)}
+          </ul>
         </div>
         
       </div>
