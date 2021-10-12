@@ -3,10 +3,21 @@ import React from 'react';
 import axios from 'axios';
 
 class App extends React.Component{
+  state = {
+    productos : []
+  }
+
+  componentDidMount(){
+    axios.get('http://localhost:3001/api/producto')
+    .then(res=>{
+      const productos = res.data.productos;
+      this.setState({productos});
+    })
+  }
 
   registrarProducto(event){
-    event.preventDefault();
-    
+    //event.preventDefault();
+
     //consumir post con axios
     axios.post('http://localhost:3001/api/producto',{
       codigo: event.target.codigo.value,
@@ -34,13 +45,15 @@ class App extends React.Component{
           </form>
         </div>
   
-  {/*
+  
         <div className="ver-resultados">
           <ul>
-            {this.state.productos.map(producto => <li>{producto.codigo} - {producto.nombre} - {producto.precio} - Disponible: {producto.disponible?'SI':'NO'}</li>)}
+            {this.state.productos.map(
+              producto => 
+                <li>{producto.codigo} - {producto.nombre} - {producto.precio} - Disponible: {producto.disponible?'SI':'NO'}</li>
+              )}
           </ul>
         </div>
-  */}
         
       </div>
     );
